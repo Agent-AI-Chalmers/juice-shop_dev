@@ -97,14 +97,6 @@ frontend/src/app/score-board/
 lib/challengeUtils.ts
 routes/verify.ts
 
-# 🔴 攻击参考 (The Exploit Scripts)
-# 可选：如果你不希望 Agent 通过阅读测试代码来反推漏洞细节，请屏蔽测试目录。
-# 评测框架 (Referee) 跑测试时会自动挂载，不需要让 Player (Agent) 提前看到。
-test/api/
-test/server/
-test/cypress/
-frontend/cypress/
-
 config.schema.yml
 models/challenge.ts
 
