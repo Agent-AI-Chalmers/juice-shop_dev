@@ -20,7 +20,6 @@ frontend/node_modules/
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
-system_benign_manifest.json
 
 # 屏蔽编译后的二进制/中间产物
 dist/
@@ -91,14 +90,8 @@ data/static/challenges.yml
 # 前端计分板逻辑，包含了大量剧透文本和判定逻辑
 frontend/src/app/score-board/
 
-# 🔴 靶场判定引擎 (The Judging Logic)
-# 负责判断“用户是否成功利用了漏洞”的核心逻辑文件
-# 屏蔽这些可以防止 Agent 针对判定逻辑进行 Hardcode（即“为了通过测试而打补丁”）
-lib/challengeUtils.ts
-routes/verify.ts
-
-config.schema.yml
-models/challenge.ts
+# config.schema.yml
+# models/challenge.ts
 
 frontend/src/hacking-instructor/
 
@@ -115,7 +108,7 @@ frontend/src/assets/
 # ==========================================
 uploads/
 rsn/cache.json
-system_benign_manifest.json
+# system_benign_manifest.json
 
 # ==========================================
 # 9. 辅助构建与环境配置
@@ -123,3 +116,21 @@ system_benign_manifest.json
 vagrant/
 Gruntfile.js
 crowdin.yaml
+
+# 现实里，“完全不让 agent 看 test，但又希望它稳定理解有效性和回归语义”，经常做不到。尤其是：
+
+# 测试输出经常不够具体，只告诉你失败了，不告诉你预期和断言细节
+# 如果 agent 完全看不到 test，出了 regression 很容易瞎猜
+# 所以与其维持一个理想化但不好用的禁令，不如承认这个妥协：test 和 PoC 是要给 agent 可读权限的。
+
+# 所有 agent 都允许读 test/ 和 PoC
+# 但 prompt 上明确规定：
+# test 只能用于理解“当前评测/兼容性期望”，不能单独作为漏洞存在性的最终证据
+# 最终安全结论必须回到 product code / runtime evidence / exploit evidence
+# 如果结论主要依赖 test，要在报告里明说“这是 test-implied constraint，不是源码显式约束”
+# 也就是说，接受“会有测试过拟合风险”，但把风险管理放到报告语义和证据分层上，而不是放到访问控制上。
+
+# 默认都能看
+# 不主动暴露具体 test 位置最好
+# 一旦测试输出点名了失败位置，agent 去看对应 test 完全合理
+# 比一刀切禁看更符合实际，也更接近人类调试方式。
