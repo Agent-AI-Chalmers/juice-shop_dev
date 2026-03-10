@@ -47,6 +47,16 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // ================= Helper Functions =================
 
+function escapeJestTestName(description) {
+    return description
+        .replace(/\\'/g, "'")
+        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function buildExactJestPattern(descriptions) {
+    return `^(?:${descriptions.map(escapeJestTestName).join('|')})$`;
+}
+
 function applyTestExclusions(excludedTests, rootDir) {
     const modifiedFiles = new Set();
     if (!excludedTests || excludedTests.length === 0) return modifiedFiles;
@@ -147,9 +157,9 @@ async function runStandardTests() {
         await sleep(1000);
         const chunk = jestFiles.slice(i, i + BATCH_SIZE);
         const chunkPaths = chunk.map(f => path.join(TEST_ROOT, f));
-        const chunkPatterns = chunk.flatMap(f => jestGroups[f])
-            .map(d => d.replace(/\\'/g, "'").replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-            .join('|');
+        const chunkPatterns = buildExactJestPattern(
+            chunk.flatMap(f => jestGroups[f])
+        );
 
         const res = spawnSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', [
             'jest', '--silent', '--forceExit', '--runInBand', ...chunkPaths, '-t', chunkPatterns
