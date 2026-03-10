@@ -4,6 +4,7 @@ FROM node:22-bookworm
 # 2. 明确安装 agent 工作流强依赖的基础工具
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
+    ripgrep \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
