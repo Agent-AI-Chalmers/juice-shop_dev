@@ -1,18 +1,27 @@
-# 1. 直接使用完整的 Node 22 镜像（基于 Debian），自带 npm, shell, git 等
+# 1. 使用完整的 Node 22 Debian 镜像，适合在容器内直接调试和执行项目命令
 FROM node:22-bookworm
 
-# 2. 设置工作目录
+# 2. 明确安装 agent 工作流强依赖的基础工具
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. 设置工作目录
 WORKDIR /app
 
-# 3. 复制所有文件（开发镜像不建议删减，保留源码和工程结构）
+# 4. 复制完整仓库，保留源码、测试和 .git 元数据
 COPY . .
 
-# 4. 安装全量依赖（包括 devDependencies，这对代码分析很重要）
+# 5. 安装全量依赖（包括 devDependencies，这对代码分析和测试很重要）
 # --unsafe-perm 是为了防止某些 node 脚本在 root 下安装失败
 RUN npm install --unsafe-perm
 
-# 暴露端口
+# 6. 让容器内本地 CLI 可直接执行
+ENV PATH="/app/node_modules/.bin:${PATH}"
+
+# 7. 暴露端口
 EXPOSE 3000
 
-# 直接启动（使用 ts-node 或编译后的 js）
-CMD ["npm", "start"]
+# 8. 开发镜像默认保持常驻，真正的 npm 命令由 agent 或人工显式触发
+CMD ["sleep", "infinity"]
