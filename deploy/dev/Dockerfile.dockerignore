@@ -1,14 +1,6 @@
-monitoring/
 node_modules/
-screenshots/
 build/reports/
 dist/
-vagrant/
 logs/
-.npmrc
-/bom.json
-/bom.xml
-
-# Pattern is not covered by node_modules/ above.
 frontend/node_modules/
 frontend/dist/

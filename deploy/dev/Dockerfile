@@ -15,6 +15,7 @@ WORKDIR /app
 COPY . .
 
 # 5. 安装全量依赖（包括 devDependencies，这对代码分析和测试很重要）
+# 以及他会启动 build
 # --unsafe-perm 是为了防止某些 node 脚本在 root 下安装失败
 RUN npm install --unsafe-perm
 
