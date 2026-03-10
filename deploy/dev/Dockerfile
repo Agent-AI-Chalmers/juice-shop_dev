@@ -3,9 +3,24 @@ FROM node:22-bookworm
 
 # 2. 明确安装 agent 工作流强依赖的基础工具
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
     git \
-    ripgrep \
     ca-certificates \
+    libgbm1 \
+    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
+    libu2f-udev \
+    libvulkan1 \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libxshmfence1 \
+    libxss1 \
+    ripgrep \
     && rm -rf /var/lib/apt/lists/*
 
 # 3. 设置工作目录
