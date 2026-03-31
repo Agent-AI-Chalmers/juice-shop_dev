@@ -53,8 +53,8 @@ For a detailed introduction, full list of features and architecture overview ple
   - [Donations](#donations)
   - [Contributors](#contributors)
   - [Licensing](#licensing)
-  - [Test Github app](#test-github-app)
-
+  - [Test Github](#test-github)
+  - [Verified Test GitHub App]
 ## Setup
 
 > You can find some less common installation variations as well as instructions to run Juice Shop on a variety of cloud computing providers in
@@ -243,4 +243,4 @@ OWASP Juice Shop and any contributions are Copyright © by Bjoern Kimminich & th
 
 ![Juice Shop Logo](https://raw.githubusercontent.com/juice-shop/juice-shop/master/frontend/src/assets/public/images/JuiceShop_Logo_400px.png)
 
-## Test Github app
+## Test Github
